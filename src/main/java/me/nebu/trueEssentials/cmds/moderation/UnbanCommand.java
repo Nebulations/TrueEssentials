@@ -37,6 +37,7 @@ public class UnbanCommand implements CommandExecutor {
         PlayerData data = PlayerData.of(target);
         if (!data.isBanned()) {
             sender.sendMessage(Util.error("This player is not banned."));
+            return true;
         }
 
         data.unban();

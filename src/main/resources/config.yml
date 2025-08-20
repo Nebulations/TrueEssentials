@@ -18,6 +18,8 @@ settings:
     #
     # We strongly recommend using PlaceholderAPI, as it features more placeholders.
     # This option may be removed in the future and rely on automatic detection of PlaceholderAPI.
+    #
+    # For the sake of things, if PlaceholderAPI is enabled, built-in placeholders will work.
     placeholderapi: true
 
   text:
@@ -172,6 +174,7 @@ settings:
       # Define how you want your warn/kick/ban screen, with the following placeholders:
       # %reason% - The reason provided
       # %who% - The moderator who punished the player
+      # %punish-date% - When the player was punished
       # %expires% - When the punishment will end | Bans only
       # %expiration-date% - The date when the punishment will expire | Bans only
       warn:

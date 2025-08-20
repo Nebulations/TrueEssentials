@@ -5,6 +5,7 @@ import me.nebu.trueEssentials.Util;
 import me.nebu.trueEssentials.cmds.homes.Home;
 import me.nebu.trueEssentials.extensions.ExtensionName;
 import me.nebu.trueEssentials.extensions.ModerationExtension;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +24,7 @@ public class PlayerData {
         return new PlayerData(player);
     }
     public static PlayerData of(OfflinePlayer offlinePlayer) {
-        return new PlayerData(Objects.requireNonNull(offlinePlayer.getPlayer()));
+        return new PlayerData(offlinePlayer);
     }
 
 
@@ -35,6 +36,36 @@ public class PlayerData {
 
     private PlayerData(Player player) {
         this.player = player;
+        String path = TrueEssentials.getInstance().getDataFolder().getAbsolutePath() + "/playerdata/" + player.getUniqueId() + ".yml";
+
+        dataFile = new File(path);
+
+        if (!dataFile.exists()) {
+            if (!dataFile.getParentFile().exists()) {
+                dataFile.getParentFile().mkdirs();
+            }
+
+            try { dataFile.createNewFile();
+            } catch (IOException e) { e.printStackTrace(); }
+        }
+
+        data = YamlConfiguration.loadConfiguration(dataFile);
+
+        if (Objects.requireNonNull(Util.getExtension(ExtensionName.HOMES)).enabled()) {
+            homes = new ArrayList<>();
+            ConfigurationSection homes = data.getConfigurationSection("homes");
+            if (homes != null) {
+                Set<String> keys = homes.getKeys(false);
+
+                for (String key : keys) {
+                    this.homes.add(new Home(key, data.getLocation("homes." + key)));
+                }
+            }
+        }
+    }
+
+    private PlayerData(OfflinePlayer player) {
+        this.player = player.getPlayer();
         String path = TrueEssentials.getInstance().getDataFolder().getAbsolutePath() + "/playerdata/" + player.getUniqueId() + ".yml";
 
         dataFile = new File(path);
@@ -126,7 +157,10 @@ public class PlayerData {
         HashMap<String, String> result = new HashMap<>();
 
         String reason = data.getString(query + "reason");
-        String mod = data.getString(query + "moderator");
+        String moderator = data.getString(query + "moderator");
+        assert moderator != null;
+
+        String mod = moderator.equalsIgnoreCase("Console") ? "Console" : Bukkit.getOfflinePlayer(UUID.fromString(moderator)).getName();
         long punishTime = data.getLong(query + "date");
         long expires = data.getLong(query + "expires");
         long timeLeft = Math.abs(expires - System.currentTimeMillis());

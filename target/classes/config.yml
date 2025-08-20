@@ -18,6 +18,8 @@ settings:
     #
     # We strongly recommend using PlaceholderAPI, as it features more placeholders.
     # This option may be removed in the future and rely on automatic detection of PlaceholderAPI.
+    #
+    # For the sake of things, if PlaceholderAPI is enabled, built-in placeholders will work.
     placeholderapi: true
 
   text:
@@ -45,8 +47,8 @@ settings:
       enabled: true
 
       # The title and subtitle (splash screen) to display to the player. Leave blank to have nothing displayed.
-      title: '<red><bold>Welcome!'
-      subtitle: '<yellow>To my server.'
+      title: '&c&lWelcome!'
+      subtitle: '&eTo my server.'
 
       # The time it takes to fade in the splash screen, in seconds. Supports decimals.
       fade-in: 1
@@ -73,11 +75,11 @@ settings:
       enabled: true
 
       # The join and quit messages. PlaceholderAPI supported if configured above. Otherwise, use built-in placeholders.
-      join-message: '<green><bold>+<reset> <gray>%player_name%'
-      quit-message: '<red><bold>-<reset> <gray>%player_name%'
+      join-message: '&a&l+ &7%player_name%'
+      quit-message: '&c&l- &7%player_name%'
 
       # The join message when a new player joins your server.
-      new-message: '<green><bold>+<reset> <gray>%player_name% <yellow><bold>NEW!'
+      new-message: '&a&l+ &7%player_name% &e&lNEW!'
 
     # If enabled, chat messages will be formatted with what you provide.
     chat-format:
@@ -86,7 +88,7 @@ settings:
       enabled: true
 
       # The format to use when formatting the message. The message can be accessed by using %message%.
-      format: '<white>%player_name%: %message%'
+      format: '&f%player_name%: %message%'
 
     # This extension adds a /spawn system.
     spawn:
@@ -172,6 +174,7 @@ settings:
       # Define how you want your warn/kick/ban screen, with the following placeholders:
       # %reason% - The reason provided
       # %who% - The moderator who punished the player
+      # %punish-date% - When the player was punished
       # %expires% - When the punishment will end | Bans only
       # %expiration-date% - The date when the punishment will expire | Bans only
       warn:
