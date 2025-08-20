@@ -45,8 +45,8 @@ settings:
       enabled: true
 
       # The title and subtitle (splash screen) to display to the player. Leave blank to have nothing displayed.
-      title: '<red><bold>Welcome!'
-      subtitle: '<yellow>To my server.'
+      title: '&c&lWelcome!'
+      subtitle: '&eTo my server.'
 
       # The time it takes to fade in the splash screen, in seconds. Supports decimals.
       fade-in: 1
@@ -73,11 +73,11 @@ settings:
       enabled: true
 
       # The join and quit messages. PlaceholderAPI supported if configured above. Otherwise, use built-in placeholders.
-      join-message: '<green><bold>+<reset> <gray>%player_name%'
-      quit-message: '<red><bold>-<reset> <gray>%player_name%'
+      join-message: '&a&l+ &7%player_name%'
+      quit-message: '&c&l- &7%player_name%'
 
       # The join message when a new player joins your server.
-      new-message: '<green><bold>+<reset> <gray>%player_name% <yellow><bold>NEW!'
+      new-message: '&a&l+ &7%player_name% &e&lNEW!'
 
     # If enabled, chat messages will be formatted with what you provide.
     chat-format:
@@ -86,7 +86,7 @@ settings:
       enabled: true
 
       # The format to use when formatting the message. The message can be accessed by using %message%.
-      format: '<white>%player_name%: %message%'
+      format: '&f%player_name%: %message%'
 
     # This extension adds a /spawn system.
     spawn:

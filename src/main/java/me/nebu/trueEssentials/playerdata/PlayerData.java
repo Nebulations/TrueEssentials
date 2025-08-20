@@ -183,6 +183,13 @@ public class PlayerData {
         save();
     }
 
+    public void unban() {
+        data.set("moderation.banned", null);
+        data.set("moderation.expires", null);
+
+        save();
+    }
+
     public void warn(String reason, CommandSender sender, long time) {
         ModerationExtension extension = (ModerationExtension) Util.getExtension(ExtensionName.MODERATION);
         assert extension != null;

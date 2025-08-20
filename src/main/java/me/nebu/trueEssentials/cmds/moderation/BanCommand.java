@@ -59,7 +59,7 @@ public class BanCommand implements CommandExecutor {
         playerData.ban(reason, ((sender instanceof Player player) ? player.getUniqueId().toString() : "Console"));
 
         if (target.isOnline()) {
-            //((Player) target).kick(extension.formatBanScreen(playerData));
+            ((Player) target).kick(extension.formatBanScreen(playerData));
         }
 
         sender.sendMessage(Util.message("Player " + target.getName() + " has been banned."));

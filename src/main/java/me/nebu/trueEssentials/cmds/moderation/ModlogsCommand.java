@@ -98,7 +98,7 @@ public class ModlogsCommand implements CommandExecutor {
         playerMeta.lore(playerLore);
         playerHead.setItemMeta(playerMeta);
 
-        inv.setItem(4, playerHead);
+        inv.setItem(22, playerHead);
 
         player.openInventory(inv);
 

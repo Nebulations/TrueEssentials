@@ -32,10 +32,9 @@ public class Util {
     public static SpawnUtil SPAWNUTIL;
     public static JoinUtil JOINUTIL;
     public static HashMap<Player, Player> TELEPORTS = new HashMap<>();
-    public static List<String> COMMANDS = new ArrayList<>();
 
     private static final MiniMessage mm = MiniMessage.miniMessage();
-    private static DateFormat dateFormat = new SimpleDateFormat("MMMMMMMMM dd, yyyy, HH:mm");
+    private static final DateFormat dateFormat = new SimpleDateFormat("MMMMMMMMM dd, yyyy, HH:mm");
 
     private static FileConfiguration config;
 

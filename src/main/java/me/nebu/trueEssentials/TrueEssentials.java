@@ -86,11 +86,12 @@ public final class TrueEssentials extends JavaPlugin {
             reg("ban", new BanCommand(), new ModCompleter());
             reg("warn", new WarnCommand(), new ModCompleter());
             reg("modlogs", new ModlogsCommand(), new PlayerCompleter());
+            reg("unban", new UnbanCommand(), new PlayerCompleter());
 
             getServer().getPluginManager().registerEvents(new JoinListener(), this);
             getServer().getPluginManager().registerEvents(new ModlogGUIListener(), this);
         } else {
-            unreg("ban", "warn", "modlogs");
+            unreg("ban", "warn", "modlogs", "unban");
         }
 
         /*if (getConfig().getBoolean("settings.extensions.item-editing.enabled")) {
