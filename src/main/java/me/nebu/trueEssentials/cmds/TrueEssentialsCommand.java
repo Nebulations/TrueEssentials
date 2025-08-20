@@ -43,6 +43,8 @@ public class TrueEssentialsCommand implements CommandExecutor {
                     .append(formatExtension(ExtensionName.SPLASHSCREEN, "Splash screen"))
                     .append(formatExtension(ExtensionName.CHAT_FORMAT, "Chat formatting"))
                     .append(formatExtension(ExtensionName.HOMES, "Homes"))
+                    .append(formatExtension(ExtensionName.COMMAND_MANAGER, "Command Manager"))
+                    .append(formatExtension(ExtensionName.MODERATION, "Moderation Utilities"))
             ));
         } else {
             sender.sendMessage(Util.error("The provided argument is invalid."));
