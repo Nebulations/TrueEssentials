@@ -1,0 +1,260 @@
+# Configuration file for TrueEssentials.
+#
+# All text-related settings support the following:
+# - Legacy chat colors | https://minecraft.wiki/w/Formatting_codes
+# - Mini message formatting | https://docs.advntr.dev/minimessage/format
+# - PlaceholderAPI (if enabled) | https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
+#
+# This plugin is designed with permissions in mind. Consider installing LuckPerms - https://luckperms.net/download
+#
+# Made by Nebula - Enjoy :)
+
+settings:
+  global:
+    # Allow or deny support for PlaceholderAPI. Changing this value to false will use built-in
+    # placeholders instead of the PlaceholderAPI ones. Built-ins include:
+    # - %player_name% : The name of the player
+    # - %player_displayname% : The player's display name (or nickname)
+    #
+    # We strongly recommend using PlaceholderAPI, as it features more placeholders.
+    # This option may be removed in the future and rely on automatic detection of PlaceholderAPI.
+    placeholderapi: true
+
+  text:
+    # The prefix to use when running commands.
+    prefix: '&d[TrueEssentials] '
+
+    # The primary color to use when sending general messages.
+    primary-color: '&f'
+
+    # The secondary color for general formatting.
+    secondary-color: '&d'
+
+    # The error color to use when sending error messages.
+    error-color: '&c'
+
+  # Here are various extensions that you can disable or enable depending on your needs.
+  #
+  # Extensions require a full server restart in order for changes to be made.
+  extensions:
+
+    # If enabled, a splash text featuring a title and subtitle will be displayed to the player upon joining.
+    splashscreen:
+
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+      # The title and subtitle (splash screen) to display to the player. Leave blank to have nothing displayed.
+      title: '<red><bold>Welcome!'
+      subtitle: '<yellow>To my server.'
+
+      # The time it takes to fade in the splash screen, in seconds. Supports decimals.
+      fade-in: 1
+
+      # The time it takes to display the splash screen, in seconds. Supports decimals.
+      time: 1
+
+      # The time it takes to fade out the splash screen, in seconds. Supports decimals.
+      fade-out: 1
+
+      # Should there be a sound that plays when joining?
+      sound: true
+
+      # The sound to play after joining. https://minecraft.wiki/w/Category:Sound_effects
+      sound-id: 'UI_TOAST_CHALLENGE_COMPLETE'
+      pitch: 2
+      volume: 1
+
+
+    # This extension allows you to customize your join, new join and quite messages.
+    join-quit-messages:
+
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+      # The join and quit messages. PlaceholderAPI supported if configured above. Otherwise, use built-in placeholders.
+      join-message: '<green><bold>+<reset> <gray>%player_name%'
+      quit-message: '<red><bold>-<reset> <gray>%player_name%'
+
+      # The join message when a new player joins your server.
+      new-message: '<green><bold>+<reset> <gray>%player_name% <yellow><bold>NEW!'
+
+    # If enabled, chat messages will be formatted with what you provide.
+    chat-format:
+
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+      # The format to use when formatting the message. The message can be accessed by using %message%.
+      format: '<white>%player_name%: %message%'
+
+    # This extension adds a /spawn system.
+    spawn:
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+      # Should there be a sound that plays after teleporting?
+      sound: true
+
+      # The sound to play after teleporting. https://minecraft.wiki/w/Category:Sound_effects
+      sound-id: 'ENTITY_ENDER_EYE_DEATH'
+      pitch: 2
+      volume: 1
+
+      # The time it takes to teleport, in seconds. Set to 0 to teleport instantly.
+      time: 5
+
+      # Should the teleportation be canceled if the player takes damage?
+      cancel-on-damage: true
+
+      # Should the teleportation be canceled if the player moves?
+      cancel-on-move: true
+
+    # This extension adds homes support, based on permissions.
+    homes:
+      enabled: true
+
+      # The maximum amount of homes a permission can have. View the examples below to understand
+      # how this section works. All sections below have the following permission format: 'trueessentials.homes.limit.[name]'
+      limits:
+
+        # Example A (in-game permission trueessentials.homes.limit.default)
+        # will have a home limit of 1.
+        default: 1
+
+        # Whichever player has the permission 'trueessentials.homes.limit.vip' will have a home
+        # limit of 3.
+        vip: 3
+
+    # This extension allows you to disable various commands.
+    # For example, you can disable viewing plugins.
+    #
+    # Bypass this feature with the permission 'trueessentials.exempt.command-manager'
+    command-manager:
+      enabled: true
+
+      # Reverses how this extension works. Instead of hiding each command,
+      # it will hide all commands and only reveal the ones below.
+      reverse: false
+
+      # The list of commands to hide.
+      commands:
+        - 'plugins'
+        - 'pl'
+        - '?'
+        - 'help'
+        - 'bukkit:plugins'
+        - 'bukkit:pl'
+        - 'bukkit:?'
+        - 'bukkit:help'
+
+    # This extension adds various moderation-related commands and systems, such as warnings
+    # and custom screens when warned, kicked or banned.
+    moderation:
+      enabled: true
+
+      # The format to use when displaying the ban duration screen
+      # - %days%    - Placeholder for days
+      # - %hours%   - Placeholder for hours
+      # - %minutes% - Placeholder for minutes
+      # - %seconds% - Placeholder for seconds
+      date-format: '%days%d %hours%h %minutes%m %seconds%s'
+
+      # The reasons listed when punishing a player.
+      reasons:
+        - 'Discrimination'
+
+      # If true, moderators will require inputting a reason from above.
+      # If false, moderators will be able to provide their own
+      # reasons.
+      strict-reason-check: false
+
+      # Define how you want your warn/kick/ban screen, with the following placeholders:
+      # %reason% - The reason provided
+      # %who% - The moderator who punished the player
+      # %expires% - When the punishment will end | Bans only
+      # %expiration-date% - The date when the punishment will expire | Bans only
+      warn:
+        - ""
+        - "&4&lYOU HAVE BEEN WARNED"
+        - "&cYou have warned for: %reason%"
+        - ""
+        - "&c&nFurther violations will lead to more severe punishments"
+        - ""
+        - "&eYou may join back."
+      ban:
+        - ""
+        - "&4&lYOU HAVE BEEN BANNED"
+        - "&cYou have banned for: %reason%"
+        - ""
+        - "&rThis ban expires in %expires%"
+        - "&c&nFurther violations will lead to more severe punishments"
+        - ""
+        - "&eAppeal here: &nhttps//example.com."
+
+      # Here you can configure the ban durations given to players once they
+      # reach a certain amount of bans.
+      # For example, once they reach 3 bans, they will be automatically banned
+      # for 12 hours.
+      #
+      # If a player reaches too many bans, the last one in the list will be taken.
+      # - d - days
+      # - h - hours
+      # - m - minutes
+      # Seconds are not supported
+      ban-durations:
+        - '30m'
+        - '3h'
+        - '12h'
+        - '3d'
+        - '14d'
+        - '30d'
+        - '90d'
+        - '365d'
+
+    # This extension adds item editing related commands, such as lore modifications,
+    # item renaming and more.
+    item-editing:
+
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+    # If enabled, these commands will be added:
+    # - /discord
+    # - /link (if enabled as well)
+    discord-server:
+      # Should this feature be enabled or disabled?
+      enabled: true
+
+      # Your discord bot's token.
+      token: ''
+
+      # The channel ID for sending chat messages.
+      id: ''
+
+      # The discord link to use when using /discord.
+      discord-link: 'https://example.com'
+
+      # Should the bot display how many people are on the server?
+      # This information will be displayed underneath the bot's name in
+      # the member list.
+      display-online: true
+
+      # Should linking between discord and minecraft account be allowed?
+      # If a player is linked, they will have the following permission: 'trueessentials.verified'
+      linking: false
+
+      # The console commands that will be executed once a player
+      # links their account. Leave empty for no commands to run.
+      #
+      # Ideally, you can reward the player for linking.
+      #
+      # A single placeholder is supported:
+      # %player% - The player's name
+      linking-rewards:
+        - 'give %player% iron_block 16'
+        - 'give %player% diamond 16'
+
+# DO NOT TOUCH ANYTHING BEYOND THIS POINT!
+storage:
+  spawn-location:

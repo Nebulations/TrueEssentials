@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <copy file="C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\target/TrueEssentials-1.jar" todir="C:\Users\Nebula\Files\Minecraft\Servers\Dev Server\plugins" />
+  </target>
+</project>
