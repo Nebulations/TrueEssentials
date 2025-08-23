@@ -5,12 +5,12 @@ import me.nebu.trueEssentials.cmds.homes.DelHomeCommand;
 import me.nebu.trueEssentials.cmds.homes.HomeCommand;
 import me.nebu.trueEssentials.cmds.homes.HomesCommand;
 import me.nebu.trueEssentials.cmds.homes.SetHomeCommand;
-import me.nebu.trueEssentials.cmds.itemediting.LoreCommand;
 import me.nebu.trueEssentials.cmds.moderation.*;
 import me.nebu.trueEssentials.completers.*;
+import me.nebu.trueEssentials.extensions.ExtensionName;
+import me.nebu.trueEssentials.extensions.ModerationExtension;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +27,8 @@ public final class TrueEssentials extends JavaPlugin {
         getLogger().info("Initializing plugin");
         TrueEssentials.instance = this;
 
+        Metrics metrics = new Metrics(this, 27001);
+
         Util.load();
         saveDefaultConfig();
 
@@ -42,63 +44,47 @@ public final class TrueEssentials extends JavaPlugin {
         Util.loadExtensions();
 
         getLogger().info("Registering commands");
-        reg("trueessentials", new TrueEssentialsCommand(), new TrueEssentialsCompleter(), "trueessentials");
+        reg(null, "trueessentials", new TrueEssentialsCommand(), new TrueEssentialsCompleter(), "trueessentials");
 
-        reg("inventorysee", new InventorySeeCommand(), new PlayerCompleter(), "inventorysee");
-        reg("enderchest", new EnderchestCommand(), new PlayerCompleter(), "enderchest", "others.enderchest");
-        reg("flight", new FlightCommand(), new PlayerCompleter(), "flight", "others.ping");
-        reg("kickall", new KickallCommand(), new EmptyCompleter(), "staff.kickall", "exempt.kickall");
-        reg("ping", new PingCommand(), new PlayerCompleter(), "ping", "others.ping");
-        reg("sudo", new SudoCommand(), new PlayerCompleter(), "sudo");
-        reg("trash", new TrashCommand(), new EmptyCompleter(), "trash");
-        reg("clearchat", new ClearchatCommand(), new EmptyCompleter(), "staff.clearchat", "exempt.clearchat");
+        reg(null, "inventorysee", new InventorySeeCommand(), new PlayerCompleter(), "inventorysee");
+        reg(null, "enderchest", new EnderchestCommand(), new PlayerCompleter(), "enderchest", "others.enderchest");
+        reg(null, "flight", new FlightCommand(), new PlayerCompleter(), "flight", "others.ping");
+        reg(null, "kickall", new KickallCommand(), new EmptyCompleter(), "staff.kickall", "exempt.kickall");
+        reg(null, "ping", new PingCommand(), new PlayerCompleter(), "ping", "others.ping");
+        reg(null, "sudo", new SudoCommand(), new PlayerCompleter(), "sudo");
+        reg(null, "trash", new TrashCommand(), new EmptyCompleter(), "trash");
+        reg(null, "clearchat", new ClearchatCommand(), new EmptyCompleter(), "staff.clearchat", "exempt.clearchat");
 
-        reg("tpask", new TpaskCommand(), new PlayerCompleter(), "teleport");
-        reg("tpaccept", new TpacceptCommand(), new EmptyCompleter());
+        reg(null, "tpask", new TpaskCommand(), new PlayerCompleter(), "teleport");
+        reg(null, "tpaccept", new TpacceptCommand(), new EmptyCompleter());
 
-        reg("gamemode", new GameModeCommand(), new GameModeCompleter(), "gamemode", "others.gamemode");
-        reg("gmc", new GameModeShortcutCommands(), new PlayerCompleter());
-        reg("gms", new GameModeShortcutCommands(), new PlayerCompleter());
-        reg("gma", new GameModeShortcutCommands(), new PlayerCompleter());
-        reg("gmsp", new GameModeShortcutCommands(), new PlayerCompleter());
+        reg(null, "gamemode", new GameModeCommand(), new GameModeCompleter(), "gamemode", "others.gamemode");
+        reg(null, "gmc", new GameModeShortcutCommands(), new PlayerCompleter());
+        reg(null, "gms", new GameModeShortcutCommands(), new PlayerCompleter());
+        reg(null, "gma", new GameModeShortcutCommands(), new PlayerCompleter());
+        reg(null, "gmsp", new GameModeShortcutCommands(), new PlayerCompleter());
 
 
         getLogger().info("Registering extension related commands");
 
-        // Commands from extensions
-        if (Util.SPAWNUTIL != null) {
-            reg("spawn", new SpawnCommand(), new EmptyCompleter());
-            reg("setspawn", new SetspawnCommand(), new EmptyCompleter());
-        } else {
-            unreg("spawn", "setspawn");
-        }
+        // Extension commands
+        reg("spawn", "spawn", new SpawnCommand(), new EmptyCompleter());
+        reg("spawn", "setspawn", new SetspawnCommand(), new EmptyCompleter());
 
-        if (getConfig().getBoolean("settings.extensions.homes.enabled")) {
-            reg("delhome", new DelHomeCommand(), new HomeCompleter());
-            reg("homes", new HomesCommand(), new EmptyCompleter());
-            reg("sethome", new SetHomeCommand(), new EmptyCompleter());
-            reg("home", new HomeCommand(), new HomeCompleter());
-        } else {
-            unreg("delhome", "homes", "sethome", "home");
-        }
+        reg("homes", "delhome", new DelHomeCommand(), new HomeCompleter());
+        reg("homes", "homes", new HomesCommand(), new EmptyCompleter());
+        reg("homes", "sethome", new SetHomeCommand(), new EmptyCompleter());
+        reg("homes", "home", new HomeCommand(), new HomeCompleter());
 
-        if (getConfig().getBoolean("settings.extensions.moderation.enabled")) {
-            reg("ban", new BanCommand(), new ModCompleter());
-            reg("warn", new WarnCommand(), new ModCompleter());
-            reg("modlogs", new ModlogsCommand(), new PlayerCompleter());
-            reg("unban", new UnbanCommand(), new PlayerCompleter());
+        reg("moderation", "ban", new BanCommand(), new ModCompleter());
+        reg("moderation", "warn", new WarnCommand(), new ModCompleter());
+        reg("moderation", "modlogs", new ModlogsCommand(), new PlayerCompleter());
+        reg("moderation", "unban", new UnbanCommand(), new PlayerCompleter());
 
+        if (Objects.requireNonNull(Util.getExtension(ExtensionName.MODERATION)).enabled()) {
             getServer().getPluginManager().registerEvents(new JoinListener(), this);
             getServer().getPluginManager().registerEvents(new ModlogGUIListener(), this);
-        } else {
-            unreg("ban", "warn", "modlogs", "unban");
         }
-
-        /*if (getConfig().getBoolean("settings.extensions.item-editing.enabled")) {
-            reg("lore", new LoreCommand(), new LoreCompleter());
-        } else {
-            unreg("lore");
-        }*/
 
         getLogger().info("Successfully initialized");
     }
@@ -108,27 +94,30 @@ public final class TrueEssentials extends JavaPlugin {
         getLogger().info("Successfully shut down");
     }
 
-    private void reg(String cmd, CommandExecutor executor, TabCompleter completer, String ... permissions) {
+    private void reg(String configPath, String cmd, CommandExecutor executor, TabCompleter completer, String ... permissions) {
         PluginManager manager = getServer().getPluginManager();
 
-        for (String permission : permissions) {
-            Permission perm = new Permission("trueessentials." + permission);
+        boolean enabled = configPath == null || getConfig().getBoolean("settings.extensions." + configPath + ".enabled");
 
-            if (manager.getPermission(perm.getName()) == null) {
-                manager.addPermission(perm);
+        System.out.println("Registering " + cmd + ": " + enabled);
+
+        if (enabled) {
+
+            for (String permission : permissions) {
+                Permission perm = new Permission("trueessentials." + permission);
+
+                if (manager.getPermission(perm.getName()) == null) {
+                    manager.addPermission(perm);
+                }
             }
-        }
 
-        Objects.requireNonNull(getCommand(cmd)).setExecutor(executor);
-        Objects.requireNonNull(getCommand(cmd)).setTabCompleter(completer == null ? new EmptyCompleter() : completer);
-    }
+            Objects.requireNonNull(getCommand(cmd)).setExecutor(executor);
+            Objects.requireNonNull(getCommand(cmd)).setTabCompleter(completer == null ? new EmptyCompleter() : completer);
+        } else {
+            SimpleCommandMap map = (SimpleCommandMap) Bukkit.getCommandMap();
 
-    private void unreg(String ... cmds) {
-        SimpleCommandMap map = (SimpleCommandMap) Bukkit.getCommandMap();
-
-        for (String cmd : cmds) {
             Objects.requireNonNull(getCommand(cmd)).unregister(map);
-            map.getKnownCommands().remove(cmd);
+            map.getKnownCommands().remove(cmd, getCommand(cmd));
         }
     }
 

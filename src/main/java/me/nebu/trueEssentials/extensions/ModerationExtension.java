@@ -8,14 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class ModerationExtension implements Extension {
-    private final ExtensionName id;
     private boolean enabled;
     private String dateFormat;
     private List<String> reasons;
@@ -24,11 +20,18 @@ public class ModerationExtension implements Extension {
     private List<String> banMessage;
     private final HashMap<Integer, Long> banDurations = new HashMap<>();
 
-    public ModerationExtension(ExtensionName id) {
-        this.id = id;
-
+    public ModerationExtension() {
         reload();
     }
+
+    @Override
+    public ExtensionName id() { return ExtensionName.MODERATION; }
+    @Override
+    public boolean enabled() { return enabled; }
+    @Override
+    public void enable() { enabled = true; }
+    @Override
+    public void disable() { enabled = false; }
 
     public String getDateFormat() {
         return dateFormat;
@@ -94,8 +97,6 @@ public class ModerationExtension implements Extension {
         FileConfiguration config = TrueEssentials.getInstance().getConfig();
 
         this.enabled = config.getBoolean("settings.extensions.moderation.enabled");
-        if (!enabled) return;
-
         this.dateFormat = config.getString("settings.extensions.moderation.date-format");
         this.reasons = config.getStringList("settings.extensions.moderation.reasons");
         reasons.replaceAll(String::toLowerCase);
@@ -110,16 +111,6 @@ public class ModerationExtension implements Extension {
             banDurations.put(i+1, Util.formatDuration(keys.get(i)));
         }
 
-        TrueEssentials.getInstance().getLogger().info("Successfully loaded extension: Moderation");
-    }
-
-    @Override
-    public ExtensionName id() {
-        return id;
-    }
-
-    @Override
-    public boolean enabled() {
-        return enabled;
+        if (enabled) TrueEssentials.getInstance().getLogger().info("Loaded extension: " + id());
     }
 }

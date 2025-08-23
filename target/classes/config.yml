@@ -164,7 +164,15 @@ settings:
 
       # The reasons listed when punishing a player.
       reasons:
+        - 'Exploiting'
+        - 'Hacking'
+        - 'AFK Farming/Using macros'
         - 'Discrimination'
+        - 'Spamming'
+        - 'Advertising'
+        - 'Harassment'
+        - 'Impersonation'
+        - 'Evading'
 
       # If true, moderators will require inputting a reason from above.
       # If false, moderators will be able to provide their own

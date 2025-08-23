@@ -2,7 +2,9 @@ package me.nebu.trueEssentials.events;
 
 import me.nebu.trueEssentials.TrueEssentials;
 import me.nebu.trueEssentials.Util;
-import me.nebu.trueEssentials.util.JoinUtil;
+import me.nebu.trueEssentials.extensions.ExtensionName;
+import me.nebu.trueEssentials.extensions.JoinExtension;
+import me.nebu.trueEssentials.extensions.SplashScreenExtension;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Sound;
@@ -16,50 +18,49 @@ import java.time.Duration;
 
 public class JoinAndQuitEvent implements Listener {
 
-    private final String join;
-    private final String quit;
-    private final String newJoin;
-
-    public JoinAndQuitEvent(String join, String newJoin, String quit) {
-        this.join = join;
-        this.quit = quit;
-        this.newJoin = newJoin;
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        String message = player.hasPlayedBefore() ? join : newJoin;
+        JoinExtension extension = (JoinExtension) Util.getExtension(ExtensionName.JOIN_QUIT_MESSAGES);
+        assert extension != null;
 
-        e.joinMessage(Util.colorize(Util.formatPlaceholders(player, message)));
+        if (extension.enabled()) {
+            String message = player.hasPlayedBefore() ? extension.joinMessage : extension.newJoinMessage;
+            e.joinMessage(Util.colorize(Util.formatPlaceholders(player, message)));
+        }
 
-        if (Util.JOINUTIL == null) return;
+        SplashScreenExtension splashExtension = (SplashScreenExtension) Util.getExtension(ExtensionName.SPLASHSCREEN);
+        assert splashExtension != null;
 
-        JoinUtil util = Util.JOINUTIL;
-        Component formattedTitle = Util.colorize(Util.formatPlaceholders(player, util.title()));
-        Component formattedSubtitle = Util.colorize(Util.formatPlaceholders(player, util.subtitle()));
+        if (!splashExtension.enabled()) {
+            return;
+        }
+
+
+        Component formattedTitle = Util.colorize(Util.formatPlaceholders(player, splashExtension.title));
+        Component formattedSubtitle = Util.colorize(Util.formatPlaceholders(player, splashExtension.subtitle));
 
         player.showTitle(Title.title(
                 formattedTitle, formattedSubtitle,
                 Title.Times.times(
-                        Duration.ofMillis((long) util.fadein()*1000),
-                        Duration.ofMillis((long) util.displayTime()*1000),
-                        Duration.ofMillis((long) util.fadeout()*1000))
+                        Duration.ofMillis((long) splashExtension.fadeInTime*1000),
+                        Duration.ofMillis((long) splashExtension.displayTime*1000),
+                        Duration.ofMillis((long) splashExtension.fadeOutTime*1000))
                 )
         );
 
-        if (util.playSound()) {
+        if (splashExtension.playSound) {
             Sound sound = Sound.ENTITY_ENDER_EYE_DEATH;
 
             try {
-                sound = Sound.valueOf(util.sound().toUpperCase());
+                sound = Sound.valueOf(splashExtension.soundId.toUpperCase());
             } catch (Exception ex) {
-                TrueEssentials.getInstance().getLogger().warning("Failed to play sound! Make sure you have properly configured sounds in the spawn extension.");
+                TrueEssentials.getInstance().getLogger().warning("Failed to play sound! Make sure you have properly configured sounds in the splash screen extension.");
             }
 
-            float pitch = util.pitch();
-            float volume = util.volume();
+            float pitch = splashExtension.pitch;
+            float volume = splashExtension.volume;
 
             Sound finalSound = sound;
 
@@ -71,7 +72,10 @@ public class JoinAndQuitEvent implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        e.quitMessage(Util.colorize(Util.formatPlaceholders(e.getPlayer(), quit)));
+        JoinExtension extension = (JoinExtension) Util.getExtension(ExtensionName.JOIN_QUIT_MESSAGES);
+        assert extension != null;
+
+        e.quitMessage(Util.colorize(Util.formatPlaceholders(e.getPlayer(), extension.quitMessage)));
     }
 
 }

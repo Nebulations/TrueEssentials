@@ -5,5 +5,7 @@ public interface Extension {
     ExtensionName id();
     boolean enabled();
     void reload();
+    void enable();
+    void disable();
 
 }

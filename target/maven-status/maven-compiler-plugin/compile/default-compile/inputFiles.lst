@@ -38,12 +38,15 @@ C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\events\CommandManagerEvents.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\events\JoinAndQuitEvent.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\BaseExtension.java
+C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\ChatFormatExtension.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\CommandManagerExtension.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\Extension.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\ExtensionName.java
+C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\JoinExtension.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\ModerationExtension.java
+C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\SpawnExtension.java
+C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\extensions\SplashScreenExtension.java
+C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\Metrics.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\playerdata\PlayerData.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\TrueEssentials.java
 C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\Util.java
-C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\util\JoinUtil.java
-C:\Users\Nebula\Files\Projects\Minecraft Plugins\TrueEssentials\src\main\java\me\nebu\trueEssentials\util\SpawnUtil.java

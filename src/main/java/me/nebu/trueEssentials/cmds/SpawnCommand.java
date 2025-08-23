@@ -3,7 +3,8 @@ package me.nebu.trueEssentials.cmds;
 import com.google.common.util.concurrent.AtomicDouble;
 import me.nebu.trueEssentials.TrueEssentials;
 import me.nebu.trueEssentials.Util;
-import me.nebu.trueEssentials.util.SpawnUtil;
+import me.nebu.trueEssentials.extensions.ExtensionName;
+import me.nebu.trueEssentials.extensions.SpawnExtension;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -36,23 +37,24 @@ public class SpawnCommand implements CommandExecutor {
             return true;
         }
 
-        SpawnUtil spawnUtil = Util.SPAWNUTIL;
+        SpawnExtension spawnExtension = (SpawnExtension) Util.getExtension(ExtensionName.SPAWN);
+        assert spawnExtension != null;
 
-        int wait = (spawnUtil.teleportTime() == 0 ? 0 : spawnUtil.teleportTime());
+        int wait = Math.max(spawnExtension.time, 0);
 
         Sound sound = Sound.ENTITY_ENDER_EYE_DEATH;
 
         try {
-            sound = Sound.valueOf(spawnUtil.sound().toUpperCase());
+            sound = Sound.valueOf(spawnExtension.soundId.toUpperCase());
         } catch (Exception e) {
             TrueEssentials.getInstance().getLogger().warning("Failed to play sound! Make sure you have properly configured sounds in the spawn extension.");
         }
 
-        float pitch = spawnUtil.pitch();
-        float volume = spawnUtil.volume();
+        float pitch = spawnExtension.pitch;
+        float volume = spawnExtension.volume;
 
-        if (spawnUtil.teleportTime() != 0) {
-            player.sendMessage(Util.message("Teleporting in " + spawnUtil.teleportTime() + " seconds."));
+        if (spawnExtension.time != 0) {
+            player.sendMessage(Util.message("Teleporting in " + spawnExtension.time + " seconds."));
         }
 
         Sound finalSound = sound;
@@ -61,6 +63,10 @@ public class SpawnCommand implements CommandExecutor {
         final AtomicDouble playerHealth = new AtomicDouble(player.getHealth());
 
         Location initialTp = player.getLocation();
+
+        boolean cancelOnMove = spawnExtension.cancelOnMove;
+        boolean cancelOnDamage = spawnExtension.cancelOnDamage;
+        boolean playsound = spawnExtension.soundAfterTeleport;
 
         new BukkitRunnable() {
             @Override
@@ -71,7 +77,7 @@ public class SpawnCommand implements CommandExecutor {
                         || initialTp.getZ() != loc.getZ()
                         || !initialTp.getWorld().equals(loc.getWorld())
                 ) {
-                    if (spawnUtil.cancelOnMove()) {
+                    if (cancelOnMove) {
                         player.sendMessage(Util.error("Teleportation canceled: You moved."));
                         cancel();
                         return;
@@ -82,7 +88,7 @@ public class SpawnCommand implements CommandExecutor {
                     playerHealth.set(player.getHealth());
                 }
 
-                if (player.getHealth() < playerHealth.get() && spawnUtil.cancelOnDamage()) {
+                if (player.getHealth() < playerHealth.get() && cancelOnDamage) {
                     player.sendMessage(Util.error("Teleportation canceled: You took damage."));
                     cancel();
                     return;
@@ -92,12 +98,9 @@ public class SpawnCommand implements CommandExecutor {
 
                 if (value <= 0) {
                     player.teleport(teleportLocation);
-
                     player.sendMessage(Util.message("Teleported to spawn."));
 
-                    if (spawnUtil.playSound()) {
-                        player.playSound(player, finalSound, volume, pitch);
-                    }
+                    if (playsound) { player.playSound(player, finalSound, volume, pitch); }
 
                     cancel();
                 }
