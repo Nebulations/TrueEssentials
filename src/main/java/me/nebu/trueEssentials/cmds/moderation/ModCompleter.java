@@ -24,14 +24,12 @@ public class ModCompleter implements TabCompleter {
 
         if (args.length == 1) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                    completer.add(player.getName());
-                }
+                Util.addIfMatches(args[0], player.getName(), completer);
             }
         }
 
         if (args.length == 2) {
-            for (String reason : extension.getReasons()) {
+            for (String reason : extension.getRawReasons()) {
                 Util.addIfMatches(args[1], reason, completer);
             }
         }

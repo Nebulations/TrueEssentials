@@ -62,4 +62,5 @@ me\nebu\trueEssentials\extensions\SpawnExtension.class
 me\nebu\trueEssentials\cmds\FlightCommand.class
 me\nebu\trueEssentials\cmds\homes\Home.class
 me\nebu\trueEssentials\extensions\Extension.class
+me\nebu\trueEssentials\CommandUtil.class
 me\nebu\trueEssentials\cmds\moderation\WarnCommand.class

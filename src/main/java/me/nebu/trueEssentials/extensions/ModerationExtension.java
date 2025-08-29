@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ModerationExtension implements Extension {
     private boolean enabled;
     private String dateFormat;
     private List<String> reasons;
+    private List<String> rawReasons;
     private boolean strictReasonCheck;
     private List<String> warnMessage;
     private List<String> banMessage;
@@ -44,6 +46,8 @@ public class ModerationExtension implements Extension {
 
         return reasons.contains(reason.toLowerCase());
     }
+
+    public List<String> getRawReasons() { return rawReasons; }
 
     public List<String> getReasons() {
         return reasons;
@@ -98,7 +102,10 @@ public class ModerationExtension implements Extension {
 
         this.enabled = config.getBoolean("settings.extensions.moderation.enabled");
         this.dateFormat = config.getString("settings.extensions.moderation.date-format");
-        this.reasons = config.getStringList("settings.extensions.moderation.reasons");
+        this.rawReasons = config.getStringList("settings.extensions.moderation.reasons");
+
+        this.reasons = new ArrayList<>();
+        reasons.addAll(rawReasons);
         reasons.replaceAll(String::toLowerCase);
 
         this.strictReasonCheck = config.getBoolean("settings.extensions.moderation.strict-reason-check");

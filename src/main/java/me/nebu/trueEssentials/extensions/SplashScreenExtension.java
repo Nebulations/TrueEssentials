@@ -27,7 +27,7 @@ public class SplashScreenExtension implements Extension {
         FileConfiguration config = TrueEssentials.getInstance().getConfig();
         ConfigurationSection s = config.getConfigurationSection("settings.extensions.splashscreen");
         if (s == null) {
-            TrueEssentials.getInstance().getLogger().warning("An error occurred when initializing an extension: " + ExtensionName.SPAWN);
+            TrueEssentials.getInstance().getLogger().warning("An error occurred when initializing an extension: " + ExtensionName.SPLASHSCREEN);
             disable();
             return;
         }

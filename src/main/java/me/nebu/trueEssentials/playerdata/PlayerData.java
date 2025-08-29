@@ -107,10 +107,20 @@ public class PlayerData {
         homes.add(home);
 
         data.set("homes." + home.name(), home.location());
+
+        save();
     }
 
     public void removeHome(String name) {
-        homes.removeIf(home -> home.name().equals(name));
+        for (Home home : homes) {
+            if (home.name().equals(name)) {
+                data.set("homes." + home.name(), null);
+                homes.remove(home);
+
+                save();
+                return;
+            }
+        }
     }
 
     public Home getHome(String name) {

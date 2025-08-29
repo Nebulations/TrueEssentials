@@ -74,7 +74,6 @@ public class SetHomeCommand implements CommandExecutor {
         }
 
         playerData.addHome(home);
-        playerData.save();
 
         player.sendMessage(Util.message("Successfully created a new home: " + homeName));
 

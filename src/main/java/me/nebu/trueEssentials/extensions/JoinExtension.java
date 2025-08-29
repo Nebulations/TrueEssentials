@@ -34,10 +34,6 @@ public class JoinExtension implements Extension {
         this.newJoinMessage = s.getString("new-message");
         this.quitMessage = s.getString("quit-message");
 
-        if (enabled) {
-            instance.getServer().getPluginManager().registerEvents(new JoinAndQuitEvent(), instance);
-        }
-
         if (enabled) TrueEssentials.getInstance().getLogger().info("Loaded extension: " + id());
     }
 

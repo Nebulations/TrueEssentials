@@ -32,7 +32,7 @@ public class TrueEssentialsCommand implements CommandExecutor {
             TrueEssentials.getInstance().reloadConfig();
             Util.load();
 
-            sender.sendMessage(Util.message("Successfully reloaded the configuration file."));
+            sender.sendMessage(Util.message("Successfully reloaded the configuration file and extensions."));
         } else if (param.equalsIgnoreCase("version")) {
             sender.sendMessage(Util.message("Installed version: " + TrueEssentials.getInstance().getPluginMeta().getVersion()));
         } else if (param.equalsIgnoreCase("extensions")) {

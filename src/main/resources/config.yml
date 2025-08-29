@@ -37,7 +37,9 @@ settings:
 
   # Here are various extensions that you can disable or enable depending on your needs.
   #
-  # Extensions require a full server restart in order for changes to be made.
+  # Extensions no longer require a complete server restart as of version 1.1.
+  # Due to technical limitations, you must restart your server for extension
+  # related commands to disappear from the tab completion.
   extensions:
 
     # If enabled, a splash text featuring a title and subtitle will be displayed to the player upon joining.
@@ -222,13 +224,6 @@ settings:
         - '30d'
         - '90d'
         - '365d'
-
-    # This extension adds item editing related commands, such as lore modifications,
-    # item renaming and more.
-    item-editing:
-
-      # Should this feature be enabled or disabled?
-      enabled: true
 
     # If enabled, these commands will be added:
     # - /discord

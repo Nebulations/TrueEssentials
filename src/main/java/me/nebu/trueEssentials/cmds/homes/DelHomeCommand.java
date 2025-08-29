@@ -42,9 +42,8 @@ public class DelHomeCommand implements CommandExecutor {
         }
 
         playerData.removeHome(homeName);
-        playerData.save();
 
-        player.sendMessage(Util.message("Successfully delete home: " + homeName));
+        player.sendMessage(Util.message("Successfully deleted home: " + homeName));
 
         return true;
     }
