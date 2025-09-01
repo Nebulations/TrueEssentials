@@ -1,6 +1,7 @@
 package me.nebu.trueEssentials.cmds.moderation;
 
 import me.nebu.trueEssentials.Util;
+import me.nebu.trueEssentials.completers.BasicCompleters;
 import me.nebu.trueEssentials.playerdata.PlayerData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -23,10 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class ModlogsCommand implements CommandExecutor {
+public class ModlogsCommand extends Command {
+
+    public ModlogsCommand() {
+        super("modlogs");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.modlogs")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -107,5 +112,10 @@ public class ModlogsCommand implements CommandExecutor {
 
     private Component dc(String value) {
         return Component.text(value + ": ").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false);
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return BasicCompleters.playerCompleter(args);
     }
 }

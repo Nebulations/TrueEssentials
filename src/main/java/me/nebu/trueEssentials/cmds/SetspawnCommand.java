@@ -2,6 +2,7 @@ package me.nebu.trueEssentials.cmds;
 
 import me.nebu.trueEssentials.TrueEssentials;
 import me.nebu.trueEssentials.Util;
+import me.nebu.trueEssentials.completers.BasicCompleters;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,12 +12,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SetspawnCommand implements CommandExecutor {
+public class SetspawnCommand extends Command {
 
+    public SetspawnCommand() {
+        super("setspawn");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.setspawn")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -40,5 +45,10 @@ public class SetspawnCommand implements CommandExecutor {
 
 
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return BasicCompleters.defaultCompleter();
     }
 }

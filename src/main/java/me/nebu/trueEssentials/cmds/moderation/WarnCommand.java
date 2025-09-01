@@ -14,11 +14,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class WarnCommand implements CommandExecutor {
+public class WarnCommand extends Command {
+
+    public WarnCommand() {
+        super("warn");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.warn")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -72,5 +78,24 @@ public class WarnCommand implements CommandExecutor {
         sender.sendMessage(Util.message("Player " + target.getName() + " has been warned."));
 
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        List<String> completer = new ArrayList<>();
+
+        if (args.length == 1) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Util.addIfMatches(args[0], player.getName(), completer);
+            }
+        }
+
+        if (args.length == 2) {
+            for (String reason : ((ModerationExtension) Util.getExtension(ExtensionName.MODERATION)).getRawReasons()) {
+                Util.addIfMatches(args[1], reason, completer);
+            }
+        }
+
+        return completer;
     }
 }

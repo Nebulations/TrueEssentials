@@ -25,8 +25,9 @@ public final class TrueEssentials extends JavaPlugin {
 
         Metrics metrics = new Metrics(this, 27001);
 
-        Util.load();
         saveDefaultConfig();
+
+        Util.load();
 
         if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             getLogger().warning("Failed to load PlaceholderAPI support: The plugin is not present or is not enabled! Falling back to basic placeholder support.");

@@ -63,36 +63,39 @@ commands:
     aliases: cc
     description: Clears the chat of all players, except the ones exempt.
     usage: /<command>
-  spawn:
-    description: Teleport you to the spawn
-    usage: /<command>
-  setspawn:
-    description: Sets the spawn location
-    usage: /<command>
-  homes:
-    description: View all your homes
-    usage: /<command>
-  sethome:
-    description: Create a new home
-    usage: /<command> <name>
-  delhome:
-    description: Delete a home
-    usage: /<command> <name>
-  home:
-    description: Teleport to one of your homes
-    usage: /<command> <name>
-  ban:
-    description: Ban a player from your server
-    usage: /<command> <player> <reason>
-  unban:
-    description: Unban a player from your server
-    usage: /<command> <player>
-  warn:
-    description: Warn a player
-    usage: /<command> <player> <reason>
-  modlogs:
-    description: View the logs of a player
-    usage: /<command> <player>
+#  spawn:
+#    description: Teleport you to the spawn
+#    usage: /<command>
+#  setspawn:
+#    description: Sets the spawn location
+#    usage: /<command>
+#  homes:
+#    description: View all your homes
+#    usage: /<command>
+#  sethome:
+#    description: Create a new home
+#    usage: /<command> <name>
+#  delhome:
+#    description: Delete a home
+#    usage: /<command> <name>
+#  home:
+#    description: Teleport to one of your homes
+#    usage: /<command> <name>
+#  ban:
+#    description: Ban a player from your server
+#    usage: /<command> <player> <reason>
+#  unban:
+#    description: Unban a player from your server
+#    usage: /<command> <player>
+#  warn:
+#    description: Warn a player
+#    usage: /<command> <player> <reason>
+#  modlogs:
+#    description: View the logs of a player
+#    usage: /<command> <player>
+#  vanish:
+#    description: Hide yourself from other players
+#    usage: /<command>
   #lore:
   #  description: Change the lore of your tool
   #  usage: /<command> <text> [<text>]

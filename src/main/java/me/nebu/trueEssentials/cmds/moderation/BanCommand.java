@@ -7,15 +7,21 @@ import me.nebu.trueEssentials.playerdata.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class BanCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BanCommand extends Command {
+
+    public BanCommand() {
+        super("ban");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.ban")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -65,5 +71,24 @@ public class BanCommand implements CommandExecutor {
         sender.sendMessage(Util.message("Player " + target.getName() + " has been banned."));
 
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        List<String> completer = new ArrayList<>();
+
+        if (args.length == 1) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Util.addIfMatches(args[0], player.getName(), completer);
+            }
+        }
+
+        if (args.length == 2) {
+            for (String reason : ((ModerationExtension) Util.getExtension(ExtensionName.MODERATION)).getRawReasons()) {
+                Util.addIfMatches(args[1], reason, completer);
+            }
+        }
+
+        return completer;
     }
 }

@@ -7,6 +7,7 @@ import me.nebu.trueEssentials.extensions.JoinExtension;
 import me.nebu.trueEssentials.extensions.SplashScreenExtension;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -67,13 +68,14 @@ public class JoinAndQuitEvent implements Listener {
             player.playSound(player, finalSound, volume, pitch);
         }
 
+        Util.updateVanished();
     }
 
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         JoinExtension extension = (JoinExtension) Util.getExtension(ExtensionName.JOIN_QUIT_MESSAGES);
-        assert extension != null;
+        if (extension == null || !extension.enabled()) return;
 
         e.quitMessage(Util.colorize(Util.formatPlaceholders(e.getPlayer(), extension.quitMessage)));
     }

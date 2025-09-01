@@ -3,6 +3,7 @@ package me.nebu.trueEssentials.cmds;
 import com.google.common.util.concurrent.AtomicDouble;
 import me.nebu.trueEssentials.TrueEssentials;
 import me.nebu.trueEssentials.Util;
+import me.nebu.trueEssentials.completers.BasicCompleters;
 import me.nebu.trueEssentials.extensions.ExtensionName;
 import me.nebu.trueEssentials.extensions.SpawnExtension;
 import org.bukkit.Location;
@@ -14,12 +15,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SpawnCommand implements CommandExecutor {
+public class SpawnCommand extends Command {
+
+    public SpawnCommand() {
+        super("spawn");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.spawn")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -108,5 +114,10 @@ public class SpawnCommand implements CommandExecutor {
         }.runTaskTimer(TrueEssentials.getInstance(), 0L, 20L);
 
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return BasicCompleters.defaultCompleter();
     }
 }

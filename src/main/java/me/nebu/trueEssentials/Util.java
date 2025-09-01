@@ -1,17 +1,10 @@
 package me.nebu.trueEssentials;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.nebu.trueEssentials.cmds.SetspawnCommand;
-import me.nebu.trueEssentials.cmds.SpawnCommand;
-import me.nebu.trueEssentials.cmds.homes.DelHomeCommand;
-import me.nebu.trueEssentials.cmds.homes.HomeCommand;
-import me.nebu.trueEssentials.cmds.homes.HomesCommand;
-import me.nebu.trueEssentials.cmds.homes.SetHomeCommand;
+import me.nebu.trueEssentials.cmds.*;
+import me.nebu.trueEssentials.cmds.homes.*;
 import me.nebu.trueEssentials.cmds.moderation.*;
-import me.nebu.trueEssentials.completers.EmptyCompleter;
-import me.nebu.trueEssentials.completers.HomeCompleter;
-import me.nebu.trueEssentials.completers.PlayerCompleter;
-import me.nebu.trueEssentials.events.CommandManagerEvents;
+import me.nebu.trueEssentials.completers.*;
 import me.nebu.trueEssentials.extensions.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -20,6 +13,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,7 +22,6 @@ import org.bukkit.entity.Player;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +37,7 @@ public class Util {
     private static final MiniMessage mm = MiniMessage.miniMessage();
     private static final DateFormat dateFormat = new SimpleDateFormat("MMMMMMMMM dd, yyyy, HH:mm");
     private static final HashMap<String, CommandUtil> commands = new HashMap<>();
+    private static final List<Player> vanishedPlayers = new ArrayList<>();
 
     private static FileConfiguration config;
 
@@ -57,10 +51,9 @@ public class Util {
         secondaryColor = Util.colorize((String) getValue("settings.text.secondary-color"));
         errorColor = Util.colorize((String) getValue("settings.text.error-color"));
 
-        if (extensions.isEmpty()) return;
-
-        extensions.forEach(Extension::reload);
-        loadCommands();
+        if (!extensions.isEmpty()) {
+            reloadExtensions();
+        }
     }
 
     public static void loadExtensions() {
@@ -75,56 +68,47 @@ public class Util {
         loadCommands();
     }
 
+    public static void reloadExtensions() {
+        extensions.forEach(Extension::reload);
+    }
+
     private static void loadCommands() {
-        TrueEssentials instance = TrueEssentials.getInstance();
+        CommandMap map = Bukkit.getCommandMap();
 
         if (Objects.requireNonNull(Util.getExtension(ExtensionName.SPAWN)).enabled()) {
-            instance.reg("spawn", "spawn", new SpawnCommand(), new EmptyCompleter());
-            instance.reg("spawn", "setspawn", new SetspawnCommand(), new EmptyCompleter());
-        } else {
-            bulkRemove("spawn", "setspawn");
+            map.register("trueessentials", new SpawnCommand());
+            map.register("trueessentials", new SetspawnCommand());
         }
 
         if (Objects.requireNonNull(Util.getExtension(ExtensionName.HOMES)).enabled()) {
-            instance.reg("homes", "delhome", new DelHomeCommand(), new HomeCompleter());
-            instance.reg("homes", "homes", new HomesCommand(), new EmptyCompleter());
-            instance.reg("homes", "sethome", new SetHomeCommand(), new EmptyCompleter());
-            instance.reg("homes", "home", new HomeCommand(), new HomeCompleter());
-        } else {
-            bulkRemove("delhome", "homes", "sethome", "home");
+            map.register("trueessentials", new DelHomeCommand());
+            map.register("trueessentials", new HomesCommand());
+            map.register("trueessentials", new SetHomeCommand());
+            map.register("trueessentials", new HomeCommand());
         }
 
         if (Objects.requireNonNull(Util.getExtension(ExtensionName.MODERATION)).enabled()) {
-            instance.reg("moderation", "ban", new BanCommand(), new ModCompleter());
-            instance.reg("moderation", "warn", new WarnCommand(), new ModCompleter());
-            instance.reg("moderation", "modlogs", new ModlogsCommand(), new PlayerCompleter());
-            instance.reg("moderation", "unban", new UnbanCommand(), new PlayerCompleter());
-        } else {
-            bulkRemove("ban", "warn", "modlogs", "unban");
+            map.register("trueessentials", new BanCommand());
+            map.register("trueessentials", new WarnCommand());
+            map.register("trueessentials", new ModlogsCommand());
+            map.register("trueessentials", new UnbanCommand());
+            map.register("trueessentials", new VanishCommand());
         }
     }
 
-    private static void bulkRemove(String ... commands) {
-        SimpleCommandMap map = (SimpleCommandMap) Bukkit.getCommandMap();
-
-        for (String cmd : commands) {
-            Objects.requireNonNull(TrueEssentials.getInstance().getCommand(cmd)).unregister(map);
-            map.getKnownCommands().remove(cmd);
-        }
+    public static List<Player> getVanishedPlayers() {
+        return vanishedPlayers;
     }
 
-    private static void restoreVanillaCommands(String ... commands) {
-        try {
-            for (String cmd : commands) {
-                SimpleCommandMap commandMap = (SimpleCommandMap) Bukkit.getServer().getCommandMap();
+    public static void updateVanished() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Bukkit.getOnlinePlayers()
+                    .forEach(p -> player.showPlayer(TrueEssentials.getInstance(), p));
 
-                Command vanilla = Bukkit.getServer().getCommandMap().getCommand(cmd);
-
-                if (vanilla == null) return;
-
-                commandMap.register("minecraft", vanilla);
-            }
-        } catch (Exception e) { e.printStackTrace(); }
+            Util.getVanishedPlayers().stream()
+                    .filter(Player::isOnline)
+                    .forEach(p -> player.hidePlayer(TrueEssentials.getInstance(), p));
+        }
     }
 
     public static Component error(String message) {
@@ -199,6 +183,7 @@ public class Util {
     public static String formatPlaceholders(Player player, String message) {
         message = message.replace("%player_name%", player.getName())
                 .replace("%player_displayname%", PlainTextComponentSerializer.plainText().serialize(player.displayName()));
+//                .replace("%tps%", String.valueOf(Bukkit.getTPS()[0]));
 
         return (TrueEssentials.PAPI ? PlaceholderAPI.setPlaceholders(player, message) : message);
     }

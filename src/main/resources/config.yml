@@ -76,7 +76,7 @@ settings:
       # Should this feature be enabled or disabled?
       enabled: true
 
-      # The join and quit messages. PlaceholderAPI supported if configured above. Otherwise, use built-in placeholders.
+      # The join and quit messages..
       join-message: '&a&l+ &7%player_name%'
       quit-message: '&c&l- &7%player_name%'
 
@@ -119,7 +119,8 @@ settings:
       enabled: true
 
       # The maximum amount of homes a permission can have. View the examples below to understand
-      # how this section works. All sections below have the following permission format: 'trueessentials.homes.limit.[name]'
+      # how this section works. All sections below have the following permission format:
+      # 'trueessentials.homes.limit.[name]'
       limits:
 
         # Example A (in-game permission trueessentials.homes.limit.default)
@@ -224,42 +225,6 @@ settings:
         - '30d'
         - '90d'
         - '365d'
-
-    # If enabled, these commands will be added:
-    # - /discord
-    # - /link (if enabled as well)
-    discord-server:
-      # Should this feature be enabled or disabled?
-      enabled: true
-
-      # Your discord bot's token.
-      token: ''
-
-      # The channel ID for sending chat messages.
-      id: ''
-
-      # The discord link to use when using /discord.
-      discord-link: 'https://example.com'
-
-      # Should the bot display how many people are on the server?
-      # This information will be displayed underneath the bot's name in
-      # the member list.
-      display-online: true
-
-      # Should linking between discord and minecraft account be allowed?
-      # If a player is linked, they will have the following permission: 'trueessentials.verified'
-      linking: false
-
-      # The console commands that will be executed once a player
-      # links their account. Leave empty for no commands to run.
-      #
-      # Ideally, you can reward the player for linking.
-      #
-      # A single placeholder is supported:
-      # %player% - The player's name
-      linking-rewards:
-        - 'give %player% iron_block 16'
-        - 'give %player% diamond 16'
 
 # DO NOT TOUCH ANYTHING BEYOND THIS POINT!
 storage:

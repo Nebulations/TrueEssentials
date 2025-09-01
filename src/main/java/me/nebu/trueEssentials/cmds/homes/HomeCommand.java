@@ -1,6 +1,7 @@
 package me.nebu.trueEssentials.cmds.homes;
 
 import me.nebu.trueEssentials.Util;
+import me.nebu.trueEssentials.completers.BasicCompleters;
 import me.nebu.trueEssentials.playerdata.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,10 +10,16 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class HomeCommand implements CommandExecutor {
+import java.util.List;
+
+public class HomeCommand extends Command {
+
+    public HomeCommand() {
+        super("home");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.homes")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -44,4 +51,8 @@ public class HomeCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return BasicCompleters.homesCompleter(sender, args);
+    }
 }

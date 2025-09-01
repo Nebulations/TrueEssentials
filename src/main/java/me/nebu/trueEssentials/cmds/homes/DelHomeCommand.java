@@ -1,6 +1,7 @@
 package me.nebu.trueEssentials.cmds.homes;
 
 import me.nebu.trueEssentials.Util;
+import me.nebu.trueEssentials.completers.BasicCompleters;
 import me.nebu.trueEssentials.completers.HomeCompleter;
 import me.nebu.trueEssentials.playerdata.PlayerData;
 import org.bukkit.command.Command;
@@ -13,10 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DelHomeCommand implements CommandExecutor {
+public class DelHomeCommand extends Command {
+
+    public DelHomeCommand() {
+        super("delhome");
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("trueessentials.homes")) {
             sender.sendMessage(Util.error("You do not have permission to run this command."));
             return true;
@@ -46,5 +51,10 @@ public class DelHomeCommand implements CommandExecutor {
         player.sendMessage(Util.message("Successfully deleted home: " + homeName));
 
         return true;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        return BasicCompleters.homesCompleter(sender, args);
     }
 }
